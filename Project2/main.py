@@ -1,68 +1,76 @@
 import random
+class Pet:
+    def __init__(self, name):
+        self.name = name
+        self.age = 0
+        self.hunger = 50 # 0 is starving, 100 is full
+        self.tiredness = 50 # 0 is not tired, 100 is sleepy
+        self.sleeping = False # false = not sleeping, true = sleeping
 
-def pet_feed(hunger, name):
-    if hunger > 80:
-        print(f'{name} is too full and cannot eat anymore')
-    else:
-        print(f'{name} is eating!')
-        hunger += 20
-    return hunger
+    def feed(self):
+        if self.sleeping:
+            print(f'{self.name} is sleeping...')
+        elif self.hunger > 80 and not self.sleeping:
+            print(f'{self.name} is too full and cannot eat anymore')
+        else:
+            print(f'{self.name} is eating!')
+            self.hunger += 20
+            self.hunger = max(self.hunger, 0)
 
-def pet_sleep(sleeping, tiredness, name):
-    if tiredness < 70:
-        print(f'{name} is not tired')
-    elif sleeping:
-        print(f'{name} is already asleep...')
-    else:
-        sleeping = True
-        print(f'{name} has fallen asleep...')
-        return sleeping
+    def sleep(self):
+        if self.tiredness < 70:
+            print(f'{self.name} is not tired')
+        elif self.sleeping:
+            print(f'{self.name} is already asleep...')
+        else:
+            self.sleeping = True
+            print(f'{self.name} has fallen asleep...')
 
-def pet_wake_up(sleeping, tiredness, name):
-    if not sleeping:
-        print(f'{name} is already awake...')
-    else:
-        tiredness = 0
-        sleeping = False
-        print(f'{name} is awake...')
-        return sleeping, tiredness
+    def wake_up(self):
+        if not self.sleeping:
+            print(f'{self.name} is already awake...')
+        else:
+            self.tiredness = 0
+            self.sleeping = False
+            print(f'{self.name} is awake...')
 
-def pet_exercise(hunger, tiredness, name):
-    if tiredness > 50 and hunger > 50:
-        print(f'{name} is hungry and tired and cannot exercise...')
-    elif hunger > 50:
-        print(f'{name} is hungry and cannot exercise...')
-    elif tiredness > 80:
-        print(f'{name} is too tired and cannot exercise...')
-    else:
-        hunger -= 20
-        tiredness += 20
-    return hunger, tiredness
+    def exercise(self):
+        if self.tiredness > 50 and self.hunger < 50:
+            print(f'{self.name} is hungry and tired and cannot exercise...')
+        elif self.hunger < 50:
+            print(f'{self.name} is hungry and cannot exercise...')
+        elif self.tiredness > 50:
+            print(f'{self.name} is too tired and cannot exercise...')
+        else:
+            self.hunger -= 20
+            self.tiredness += 20
 
-def pet_pass_time(age, hunger, tiredness, name):
-    activities = ['chasing a laser', 'starring out the window', 'chasing a mouse']
-    age += 1
-    hunger -= 10
-    tiredness += 10
-    activity = random.choice(activities)
-    print(f'{name} is bored and is {activity}...')
-    grow(age)
-    return age, hunger, tiredness
+    def pass_time(self):
+        activities = ['chasing a laser', 'starring out the window', 'chasing a mouse']
+        self.age += 1
+        self.hunger -= 10
+        self.tiredness += 10
+        self.hunger = max(self.hunger, 0)
+        self.tiredness = min(self.tiredness, 100)
+        activity = random.choice(activities)
+        print(f'{self.name} is bored and is {activity}...')
+        self.grow()
 
-def grow(age):
-    pass
+    def grow(self):
+        if self.age <= 1:
+            print(f'{self.name} is still a kitten...')
+        elif self.age > 1 and self.age <= 10:
+            print(f'{self.name} is an adult...')
+        else:
+            print(f'{self.name} is an old cat...')
 
 if __name__ =="__main__":
     pet_name = str(input("Please enter your pet name: "))
-    age = 0
-    hunger = 50 # 100 is full
-    tiredness = 50 # 100 is sleepy
-    sleeping = False # false = not sleeping, true = sleeping
-    
+    pet = Pet(pet_name)
     while True:
-        print(f'Age: {age}')
-        print(f'Hunger: {hunger}')
-        print(f'Tiredness: {tiredness}')
+        print(f'Age: {pet.age}')
+        print(f'Hunger: {pet.hunger}')
+        print(f'Tiredness: {pet.tiredness}')
         print("\n--- Menu ---")
         print("1. Feed pet")
         print("2. Put pet to sleep")
@@ -73,15 +81,15 @@ if __name__ =="__main__":
         choice = input("Choose an action: ")
 
         if choice == "1":
-            hunger = pet_feed(hunger, pet_name)
+            pet.feed()
         elif choice == "2":
-            sleeping = pet_sleep(sleeping, tiredness, pet_name)
+            pet.sleep()
         elif choice == "3":
-           (sleeping, tiredness) = pet_wake_up(sleeping, tiredness, pet_name)
+           pet.wake_up()
         elif choice == "4":
-           (hunger, tiredness) = pet_exercise(hunger, tiredness, pet_name)
+           pet.exercise()
         elif choice == "5":
-            (age, hunger, tiredness) = pet_pass_time(age, hunger, tiredness, pet_name)
+            pet.pass_time()
         elif choice == "6":
             print("Goodbye!")
             break
