@@ -53,7 +53,7 @@ def main():
         elif option == 'U':
             update_meeting()
 
-        home = os.path.expanduser(f"~/Uni/Project1/{basedir}") # this will be different on jupyterhub since your on local laptop rn
+        home = os.path.expanduser(f"~/Uni//Uni_Projects/Project1/{basedir}") # this will be different on jupyterhub since your on local laptop rn
         os.chdir(home)
         pass
 
