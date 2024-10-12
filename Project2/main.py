@@ -15,7 +15,7 @@ class Pet:
         else:
             print(f'{self.name} is eating!')
             self.hunger += 20
-            self.hunger = max(self.hunger, 0)
+            self.hunger = min(self.hunger, 100) # make sure hunger isnt over 100
 
     def sleep(self):
         if self.tiredness < 70:
@@ -44,9 +44,11 @@ class Pet:
         else:
             self.hunger -= 20
             self.tiredness += 20
+            self.hunger = max(self.hunger, 0) # make sure hunger is not a negative
+            self.tiredness = min(self.tiredness, 100) # make sure tiredness is not over 100
 
     def pass_time(self):
-        activities = ['chasing a laser', 'starring out the window', 'chasing a mouse']
+        activities = ['chasing a laser', 'staring out the window', 'chasing a mouse', ]
         self.age += 1
         self.hunger -= 10
         self.tiredness += 10
