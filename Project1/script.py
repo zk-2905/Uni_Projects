@@ -40,6 +40,12 @@ def update_meeting():
     f.write(', ' + people) # writes the people given by user into the text file
     f.close()
 
+def count_files_folders(basedir):
+    for root, dirs, files in os.walk(f'/Users/zk/Uni/Uni_Projects/Project1/{basedir}'): # path will be different on juypterhub
+        print(f"\nIn directory: {root}")
+        print(f"Number of subdirectories: {len(dirs)}")
+        print(f"Number of files: {len(files)}")
+
 
 def main():
     true = True
@@ -56,13 +62,16 @@ def main():
         while more:
             more_workflow = str(input("Do you want to create more Workflow directories (y/n): "))
             if more_workflow == 'y':
-                create_new_workflow
+                create_new_workflow()
             else:
                 more = False
     while true:
         more = True
         valid = True
         while valid: # checks if workflow name exists and lets user re-enter workflow name
+            check_files_folders = str(input("Do you want to check how many files and folders there (y/n):  "))
+            if check_files_folders == 'y':
+                count_files_folders(basedir)
             workflow = str(input("Enter Workflow name: "))
             if os.path.exists(workflow):
                 os.chdir(workflow)
