@@ -2,42 +2,42 @@ import os
 #os.getcwd() shows path
 def create_basedir():
     basedir = str(input('Please enter a name for your base directory: '))
-    if os.path.exists(basedir):
+    if os.path.exists(basedir): #checks if base directory already exists in system
         print("This directory already exists!")
         pass
     else:
-        path = os.path.join(basedir)
-        os.mkdir(path)
+        path = os.path.join(basedir) # adds basedir to the file path
+        os.mkdir(path) # creates directory
         print(f"{basedir} is created!")
 
 def create_new_workflow():
     workflow = str(input("Input Workflow name: "))
-    if os.path.exists(workflow):
+    if os.path.exists(workflow): # checks if workflow directory already exists
         print("This Workflow already exists!")
     else:
-        path = os.path.join(workflow)
-        os.mkdir(path)
+        path = os.path.join(workflow) # adds workflow directory to the file path
+        os.mkdir(path) # creates directory
 
 def create_new_stage():
     stage = str(input("Input Stage name: "))
-    if os.path.exists(stage):
+    if os.path.exists(stage): # checks if stage directory already exists
         print("This Stage already exists!")
     else:
-        path = os.path.join(stage)
-        os.mkdir(path)
+        path = os.path.join(stage) # adds stage directory to the file path
+        os.mkdir(path) # creates directory
 
 def create_meeting():
     filename = str(input("Enter filename: "))
-    f = open(filename + '.txt', 'w')
+    f = open(filename + '.txt', 'w') # creates a new text file
     people = str(input("Input all of the attendees: "))
-    f.write(people)
+    f.write(people) # writes the people given by user into the text file
     f.close()
 
 def update_meeting():
     filename = str(input("Enter filename: "))
-    f = open(filename + '.txt', 'a')
+    f = open(filename + '.txt', 'a') # opens the text file mentioned by user
     people = str(input("Input all of the attendees: "))
-    f.write(', ' + people)
+    f.write(', ' + people) # writes the people given by user into the text file
     f.close()
 
 
@@ -46,9 +46,9 @@ def main():
     more = True
     choice = str(input("Do you have an existing Base Directory: (y/n)"))
     if choice == 'n':
-        create_basedir()
+        create_basedir() #
     basedir = str(input("Please enter your Base Directory name: "))
-    os.chdir(basedir)
+    os.chdir(basedir) # cd into the base directory
     print(f"You are in {basedir}")
     workflow = str(input("Do you want to create a new Workflow directory: "))
     if workflow == 'y':
@@ -62,7 +62,7 @@ def main():
     while true:
         more = True
         valid = True
-        while valid:
+        while valid: # checks if workflow name exists and lets user re-enter workflow name
             workflow = str(input("Enter Workflow name: "))
             if os.path.exists(workflow):
                 os.chdir(workflow)
@@ -80,14 +80,13 @@ def main():
                     more = False
 
         valid = True
-        while valid:
+        while valid: # checks if stage name exists and lets user re-enter stage name
             stage = str(input("Enter Stage name: "))
             if os.path.exists(stage):
                 os.chdir(stage)
                 valid = False
             else:
                 print("This stage name does not exists. Please try again!")
-            
 
         option = str(input("To create a text file enter T/ To update a text file enter U: "))
         if option == 'T':
