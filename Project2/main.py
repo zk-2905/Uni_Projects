@@ -44,6 +44,10 @@ class Pet:
         elif self.fatigue > 50:
             print(f'{self.name} is too tired and cannot exercise...')
         else:
+<<<<<<< Updated upstream
+=======
+            print(f"{self.name} is exercising...")
+>>>>>>> Stashed changes
             self.hunger += 20
             self.fatigue += 20
             self.hunger = min(self.hunger,100) # make sure hunger isnt over 100
