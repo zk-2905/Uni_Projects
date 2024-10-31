@@ -10,7 +10,10 @@ def create_basedir():
     else:
         path = os.path.join(basedir) # adds basedir to the file path
         os.mkdir(path) # creates directory
+        os.chdir(path)
         print(f"{basedir} is created!")
+        print(f"You are in {basedir}")
+    return basedir
 
 def create_new_workflow():
     workflow = str(input("Input Workflow name: "))
@@ -29,13 +32,13 @@ def create_new_stage():
         os.mkdir(path) # creates directory
 
 def create_meeting():
-    filename = str(input("Enter filename: "))
+    filename = str(input("Enter filename in the format YYYY-MM-DD: "))
     amount = int(input('How many people attended the meeting: '))
     with open(filename + '.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['Firstname','Lastname','Role'])
         for i in range(amount):
-            people = str(input("Enter the persons first name, last name and role seperated by commas: "))
+            people = str(input("Enter the persons first name, last name and role seperated by commas one at a time: "))
             new_people = people.strip(' ').split(',')
             writer.writerow(new_people)
 
@@ -48,77 +51,79 @@ def count_files_folders(basedir):
 def display_meeting():
     while True:
         filename = str(input("Enter filename: "))
-        if not os.path.exists(filename + '.csv'):
-            print("Invalid Filename, please try again.")
-        elif filename == '':
+        if filename == '':
             break
+        elif not os.path.exists(filename + '.csv'):
+            print("Invalid Filename, please try again.")
         else:
             csvFile = pandas.read_csv(filename +'.csv')
             print(csvFile)  
             break
-    
 
 def main():
-    choice = str(input("Do you have an existing Base Directory: (y/n)"))
+    choice = str(input("Do you have an existing Base Directory: (y/n)")).lower()
     if choice == 'n':
-        create_basedir() #
-    basedir = str(input("Please enter your Base Directory name: "))
-    os.chdir(basedir) # cd into the base directory
-    print(f"You are in {basedir}")
+        basedir = create_basedir()
+    else:
+        basedir = str(input("Please enter your Base Directory name to go into: "))
+        os.chdir(basedir) # cd into the base directory
+        print(f"You are in {basedir}")
 
     while True:
-        workflow = str(input("Do you want to create a new Workflow directory: "))
+        workflow = str(input("Do you want to create a new Workflow directory (y/n): ")).lower()
         if workflow == 'y':
             create_new_workflow()
 
         while True:
-            more_workflow = str(input("Do you want to create more Workflow directories (y/n): "))
+            more_workflow = str(input("Do you want to create more Workflow directories (y/n): ")).lower()
             if more_workflow == 'y':
                 create_new_workflow()
             else:
                 break
-        check_files_folders = str(input("Do you want to check how many files and folders there (y/n):  "))
+        check_files_folders = str(input("Do you want to check how many files and folders there (y/n):  ")).lower()
         if check_files_folders == 'y':
             count_files_folders(basedir)
 
         while True: # checks if workflow name exists and lets user re-enter workflow name
-            workflow = str(input("Enter Workflow name: "))
+            workflow = str(input("Enter Workflow name you want to enter: "))
             if os.path.exists(workflow):
                 os.chdir(workflow)
                 print(f"You are now in {workflow} ")
                 break
             else:
                 print("This workflow does not exists. Please try again!")
-        stage = str(input("Do you want to create a Stage directory (y/n): "))
+        stage = str(input("Do you want to create a Stage directory (y/n): ")).lower()
         if stage == 'y':
             create_new_stage()
 
         while True:
-            more_stage = str(input("Do you want to create more Stage directories (y/n): "))
+            more_stage = str(input("Do you want to create more Stage directories (y/n): ")).lower()
             if more_stage == 'y':
                 create_new_stage()
             else:
                 break
 
         while True: # checks if stage name exists and lets user re-enter stage name
-            stage = str(input("Enter Stage name: "))
+            stage = str(input("Enter Stage name you want to enter: "))
             if os.path.exists(stage):
                 os.chdir(stage)
                 print(f'You are now in {stage}')
                 break
             else:
                 print("This stage name does not exists. Please try again!")
-        print("\n--- Menu ---")
-        print("1. Create a meeting")
-        print("2. Display meeting information")
-        print(f"3. Go back to {basedir}")
-        choice = int(input("Choose your action: "))
-        if choice == 1:
-            create_meeting()
-        elif choice == 2:
-            display_meeting()
-        elif choice == 3:
-            home = os.path.expanduser(f"~/Uni//Uni_Projects/Project1/{basedir}") # this will be different on jupyterhub since your on local laptop rn
-            os.chdir(home)
+        while True:
+            print("--- Menu ---")
+            print("1. Create a meeting")
+            print("2. Display meeting information")
+            print(f"3. Go back to {basedir}")
+            choice = int(input("Choose your action: "))
+            if choice == 1:
+                create_meeting()
+            elif choice == 2:
+                display_meeting()
+            elif choice == 3:
+                home = os.path.expanduser(f"~/Uni//Uni_Projects/Project1/{basedir}") # this will be different on jupyterhub since your on local laptop rn
+                os.chdir(home)
+                break
 
 main()
